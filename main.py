@@ -8,7 +8,7 @@ pygame.init()
 background_color = (0, 72, 139)
 players_color = (255, 255, 255)
 ball_color = (201, 209, 255)
-
+line_color = (0, 17, 106)
 
 # Window size
 screen_width = 800
@@ -30,12 +30,20 @@ player1_y = 32
 
 # Player 2 coordinates
 player2_x = screen_width - 64
-player2_y = 32
+player2_y = 250
 
 # Ball coordinates
-ball_x = 250
+ball_x = 400
 ball_y = 300
 ball_radius = 16
+
+# Line size
+line_width = 8
+line_height = 600
+
+# Line position
+line_x = 396
+line_y = 0
 
 # Title
 pygame.display.set_caption("Python Pong")
@@ -55,6 +63,9 @@ while running:
     screen.fill(background_color)
 
     # Drawing area
+
+    # Define the line
+    line = pygame.draw.rect(screen, line_color, (line_x, line_y, line_width, line_height))
 
     # Define the player 1 - left
     player1 = pygame.draw.rect(screen, players_color, (player1_x, player1_y, player_width, player_height))
