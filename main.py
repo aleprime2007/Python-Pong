@@ -1,5 +1,7 @@
 # Importar librerías
 import pygame
+import math
+import random as rd
 
 # Initialize pygame
 pygame.init()
@@ -38,6 +40,9 @@ player2_y_speed = 0
 ball_x = 400
 ball_y = 300
 ball_radius = 16
+ball_speed_x = 0.15
+ball_speed_y = 0.15
+
 
 # Line size
 line_width = 8
@@ -90,13 +95,33 @@ while running:
             # Player 2
             if event.key == pygame.K_UP:
                 player2_y_speed = 0
-            
+
             if event.key == pygame.K_DOWN:
                 player2_y_speed = 0
-
+            
     # Players movement
     player1_y += player1_y_speed
     player2_y += player2_y_speed
+
+    # Ball movement
+    ball_x += ball_speed_x
+    ball_y += ball_speed_y
+
+    # Players collisions
+    
+    # Player 1
+    if player1_y <= 0:
+        player1_y = 0
+    
+    if player1_y >= screen_height - player_height:
+        player1_y = screen_height - player_height
+    
+    # Player 2
+    if player2_y <= 0:
+        player2_y = 0
+    
+    if player2_y >= screen_height - player_height:
+        player2_y = screen_height - player_height
 
     # Fill the screen with color
     screen.fill(background_color)
@@ -115,5 +140,19 @@ while running:
     # Define the ball
     ball = pygame.draw.circle(screen, ball_color, (ball_x, ball_y), ball_radius)
 
+    # Ball collision
+    if ball_y > (screen_height - ball_radius) or ball_y < ball_radius:
+        ball_speed_y *= -1
+    
+    # Ball collision and score update
+    if ball_x > screen_width:
+        ball_x = screen_width/2
+        ball_y = screen_height/2
+        ball_speed_x = rd.choice((-0.15, 0.15))
+    elif ball_x < 0:
+        ball_x = screen_width/2
+        ball_y = screen_height/2
+        ball_speed_x = rd.choice((-0.15, 0.15))
+    
     # Refresh the window
     pygame.display.flip()
