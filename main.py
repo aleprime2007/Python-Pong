@@ -43,6 +43,37 @@ ball_radius = 16
 ball_speed_x = 0.15
 ball_speed_y = 0.15
 
+# Scores
+player1_score = 0
+player2_score = 0
+
+# Score font
+score_font = pygame.font.Font("font.otf", 32)
+
+# Won font
+won_font = pygame.font.Font("font.otf", 64)
+
+# Won text position
+won_x = 200
+won_y = 250
+
+# Score position - Player 1
+player1_score_x = 10
+player1_score_y = 10
+
+# Score position - Player 2
+player2_score_x = screen_width - 190
+player2_score_y = 10
+
+# Player 1 score funtion
+def show_score1(x, y):
+    score1 = score_font.render("Player 1: " + str(player1_score), True, (0, 0, 0))
+    screen.blit(score1, (x, y))
+
+# Player 2 score funtion
+def show_score2(x, y):
+    score2 = score_font.render("Player 2: " + str(player2_score), True, (0, 0, 0))
+    screen.blit(score2, (x, y))
 
 # Line size
 line_width = 8
@@ -149,10 +180,36 @@ while running:
         ball_x = screen_width/2
         ball_y = screen_height/2
         ball_speed_x = rd.choice((-0.15, 0.15))
+        player1_score += 1
     elif ball_x < 0:
         ball_x = screen_width/2
         ball_y = screen_height/2
         ball_speed_x = rd.choice((-0.15, 0.15))
+        player2_score += 1
+    
+    # Colitions
+    if ball.colliderect(player1) or ball.colliderect(player2):
+        ball_speed_x *= -1
+    
+    # Show won text
+    if player1_score >= 3:
+        won_text = won_font.render("Player 1 won", True, (0, 0, 0))
+        screen.blit(won_text, (won_x, won_y))
+        ball_speed_x = 0
+        ball_speed_y = 0
+        player1_y_speed = 0
+        player2_y_speed = 0
+    elif player2_score >= 3:
+        won_text = won_font.render("Player 2 won", True, (0, 0, 0))
+        screen.blit(won_text, (won_x, won_y))
+        ball_speed_x = 0
+        ball_speed_x = 0
+        player1_y_speed = 0
+        player2_y_speed = 0       
+
+    # Call score funtions
+    show_score1(player1_score_x, player1_score_y)
+    show_score2(player2_score_x, player2_score_y)
     
     # Refresh the window
     pygame.display.flip()
