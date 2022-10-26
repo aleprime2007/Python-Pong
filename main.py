@@ -2,6 +2,7 @@
 import pygame
 import math
 import random as rd
+from pygame import mixer
 
 # Initialize pygame
 pygame.init()
@@ -11,6 +12,11 @@ background_color = (0, 72, 139)
 players_color = (255, 255, 255)
 ball_color = (201, 209, 255)
 line_color = (0, 17, 106)
+
+# Background music
+mixer.music.load("msc_background.ogg")
+mixer.music.play(-1)
+mixer.music.set_volume(0.3)
 
 # Window size
 screen_width = 800
@@ -181,15 +187,21 @@ while running:
         ball_y = screen_height/2
         ball_speed_x = rd.choice((-0.15, 0.15))
         player1_score += 1
+        boundary_sound = mixer.Sound("sfx_ball_boundary.ogg")
+        boundary_sound.play()
     elif ball_x < 0:
         ball_x = screen_width/2
         ball_y = screen_height/2
         ball_speed_x = rd.choice((-0.15, 0.15))
         player2_score += 1
+        boundary_sound = mixer.Sound("sfx_ball_boundary.ogg")
+        boundary_sound.play()
     
     # Colitions
     if ball.colliderect(player1) or ball.colliderect(player2):
         ball_speed_x *= -1
+        ball_sound = mixer.Sound("sfx_ball_player.ogg")
+        ball_sound.play()
     
     # Show won text
     if player1_score >= 3:
@@ -199,13 +211,15 @@ while running:
         ball_speed_y = 0
         player1_y_speed = 0
         player2_y_speed = 0
+        ball_y = 2000
     elif player2_score >= 3:
         won_text = won_font.render("Player 2 won", True, (0, 0, 0))
         screen.blit(won_text, (won_x, won_y))
         ball_speed_x = 0
         ball_speed_x = 0
         player1_y_speed = 0
-        player2_y_speed = 0       
+        player2_y_speed = 0   
+        ball_y = 2000
 
     # Call score funtions
     show_score1(player1_score_x, player1_score_y)
